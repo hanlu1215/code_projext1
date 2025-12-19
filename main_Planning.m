@@ -1,32 +1,10 @@
 clear; clc; close all;
 % 初始化机器人模型
-robot = rigidBodyTree('DataFormat','column','MaxNumBodies',6);
-% D-H 参数表
-% [a alpha d theta]
-DH = [
-    0    pi/2   0.44   0;
-    3    0       0      0;
-    0    -pi/2    0      0;
-    0    pi/2    2.8    0;
-    0    -pi/2    0.24   0;
-    0    0       0.40   0
-    ];
-% 创建机器人模型
-parent = 'base';
-for i = 1:size(DH,1)
-    body = rigidBody(['link',num2str(i)]);
-    joint = rigidBodyJoint(['joint',num2str(i)], 'revolute');
-    setFixedTransform(joint, DH(i,:), 'dh');
-    body.Joint = joint;
-    addBody(robot, body, parent);
-    parent = body.Name;
-end
+robot = build_robot();
 figure('Name', '机械臂模型', 'NumberTitle', 'off');
 ax = gca;
 % 绘制基座长方体
-base_params = struct('length', 3.6, 'width', 2.36, 'height', 2.1, ...
-                     'center', [-3.6/2, 0, -2.1/2]);
-drawBox(ax, base_params);
+drawBox(ax);
 hold(ax, 'on');
 
 config = [0,pi,-3*pi/2,0,0,0]';  % 机械臂初始构型
@@ -81,10 +59,10 @@ view_Az = -30;
 view_El = 40;
 view(ax, view_Az, view_El);
 
-% 获取并固定坐标轴范围
-xlim_range = [-4,4];
-ylim_range = [-2.1,2.1];
-zlim_range = [-3,6];
+% 固定坐标轴范围
+xlim_range = [-4,6.2];
+ylim_range = [-6.2,6.2];
+zlim_range = [-5,6];
 
 % 创建视频写入对象
 video_filename = 'robot_animation.mp4';
@@ -110,7 +88,7 @@ for step = 1:n_steps
     cla(ax);
 
     % 绘制基座长方体
-    drawBox(ax, base_params);
+    drawBox(ax);
 
     hold(ax, 'on');
     show(robot, config, 'Parent', ax, 'PreservePlot', false);

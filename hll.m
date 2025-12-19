@@ -1,3 +1,4 @@
+%% 说明：此函数用于设置全局图形属性
 clear;close all;clc
 % set(0, 'DefaultAxesFontName', 'Times New Roman'); % 设置图形坐标轴字体
 % set(0, 'DefaultTextFontName', 'Times New Roman'); % 设置文本字体

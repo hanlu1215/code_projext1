@@ -1,36 +1,7 @@
 hll
+%% 正运动学的验证：fkine vs rigidBodyTree
 % 初始化机器人模型
-syms th1 th2 th3 th4 th5 th6 real
-
-% D-H 参数表
-q = [th1; th2; th3; th4; th5; th6];
-T = fkine(q);
-simplify(T)
-
-
-%%
-% 初始化机器人模型
-robot = rigidBodyTree('DataFormat','column','MaxNumBodies',6);
-
-% D-H 参数表
-% [a alpha d theta]
-DH = [
-    0    pi/2   0.44   0;
-    3    0       0      0;
-    0    -pi/2    0      0;
-    0    pi/2    2.8    0;
-    0    -pi/2    0.24   0;
-    0    0       0.40   0
-    ];
-parent = 'base';
-for i = 1:size(DH,1)
-    body = rigidBody(['link',num2str(i)]);
-    joint = rigidBodyJoint(['joint',num2str(i)], 'revolute');
-    setFixedTransform(joint, DH(i,:), 'dh');
-    body.Joint = joint;
-    addBody(robot, body, parent);
-    parent = body.Name;
-end
+robot = build_robot();
 
 %% 对比fkine和robot计算末端位置
 fprintf('========================================\n');

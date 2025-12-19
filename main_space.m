@@ -64,9 +64,7 @@ hold on;
 %% 绘制机械臂初始构型
 
 % 绘制基座长方体
-base_params = struct('length', 3.6, 'width', 2.36, 'height', 2.1, ...
-                     'center', [-3.6/2, 0, -2.1/2]);
-drawBox(ax, base_params);
+drawBox(ax);
 hold(ax, 'on');
 q_init = zeros(6,1);  % 初始构型（所有关节角度为0）
 
@@ -148,7 +146,7 @@ zlabel('Z (m)', 'FontSize', 13, 'FontWeight', 'bold');
 title(sprintf('6-DOF 机械臂末端工作空间（Monte Carlo 方法，N=%d）', N), ...
       'FontSize', 14, 'FontWeight', 'bold');
 
-view(45, 30);
+view(-20, 30);
 colormap(jet);
 
 
